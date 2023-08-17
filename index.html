@@ -515,7 +515,7 @@ function assessBalance(cycleBaseArrayList,instList,minmax) {
 		for (i = 0; i < cycleBaseArrayList.length; i++) {
 			balanced = false;
 			for (j = 0; j < baseComboList.length; j++) {
-				if (fullReturn[i][baseChart.indexOf(baseComboList[j][0])] >= 0.33 && cycleBaseArrayList[i][baseChart.indexOf(baseComboList[j][1])] >= 0.33) {
+				if (fullReturn[i][baseChart.indexOf(baseComboList[j][0])] + cycleBaseArrayList[i][baseChart.indexOf(baseComboList[j][1])] >= 0.66) {
 					balanced = true;
 				}
 			}
