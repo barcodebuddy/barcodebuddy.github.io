@@ -2,71 +2,80 @@
 
 <html>
 <head>
+	<title>Barcode Buddy</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="assets/css/main.css" />
+	<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 </head>
 
-<body>
-	<h1 style="display:block">Barcode Buddy</h1>
-	Enter barcodes, each on a new line, here:<br><br>
+<body style="resize:none">
 	<div>
-		<div id="entryArea_i7" style="display:inline-block; margin: 1%;">
-			<p style="margin:1px 0">i7</p>
-			<div>
-				<p style="display:inline-block">Mismatch tolerance: </p>
-				<input type="text" id="index7Mismatch"; style="width:15px; display:inline-block;" value=1></textarea>
-			</div>
-			<textarea id="index7List"; rows ="36";cols="50";></textarea><br>
-			<button style="display:block; margin:1%" id="i7rcButton">Reverse complement i7s</button>
+		<div>
+			<h1 style="display:block; margin: 1% 0% 0% 1%">Barcode Buddy</h1>
+			<p style="display:block;margin: 0% 0% 0% 1%">Enter barcodes, each on a new line, here:<br></p>
 		</div>
-		<div id="entryArea_i5" style="display:inline-block; margin: 1%;">
-			<p style="margin:1px 0">i5</p>
-			<div>
-				<p style="display:inline-block">Mismatch tolerance: </p>
-				<input type="text" id="index5Mismatch"; style="width:15px; display:inline-block;" value=1></textarea>
+		<div style="width:100%">
+			<div id="entryArea_i7" style="display:inline-block; margin: 1% 1% 0% 1%;">
+				<p style="margin:1px 0">i7</p>
+				<div>
+					<p style="display:inline-block">Mismatch tolerance: </p>
+					<input type="text" id="index7Mismatch"; style="width:150px; display:inline-block;text-align:center;" value=1></textarea>
+				</div>
+				<textarea id="index7List"; rows ="16";cols="50";></textarea><br>
+				<button style="display:block; margin:1%" id="i7rcButton">Reverse complement i7s</button>
 			</div>
-			<textarea id="index5List"; rows ="36";cols="50";></textarea><br>
-			<button style="display:block; margin:1%" id="i5rcButton">Reverse complement i5s</button>
-		</div>
-		
-		<div style="display:inline-block;vertical-align:top">
-		<div id="spacer" style="height:100px";></div>
-			<fieldset id="instrumentbox" style="width:100%; display:inline-block; margin: 2%;">
-				<legend>Select an instrument:</legend>
-
+			<div id="entryArea_i5" style="display:inline-block; margin: 1% 1% 0% 1%;">
+				<p style="margin:1px 0">i5</p>
 				<div>
-					<input type="radio" id="iseq" name="instchoice" value="iseq" checked />
-					<label for="iseq">iSeq</label>
+					<p style="display:inline-block">Mismatch tolerance: </p>
+					<input type="text" id="index5Mismatch"; style="width:150px; display:inline-block;text-align:center;" value=1></textarea>
 				</div>
-				<div>
-					<input type="radio" id="miseq" name="instchoice" value="miseq" checked />
-					<label for="miseq">MiSeq</label>
-				</div>
-				<div>
-					<input type="radio" id="nextseq500" name="instchoice" value="nextseq" checked />
-					<label for="nextseq500">NextSeq500/550</label>
-				</div>
-				<div>
-					<input type="radio" id="miniseq" name="instchoice" value="nextseq" checked />
-					<label for="miniseq">MiniSeq</label>
-				</div>
-				<div>
-					<input type="radio" id="nextseq2000" name="instchoice" value="nextseq" checked />
-					<label for="nextseq2000">NextSeq1000/2000</label>
-				</div>
-				<div>
-					<input type="radio" id="nova" name="instchoice" value="nova" checked />
-					<label for="nova">NovaSeq6000</label>
-				</div>
-				<div>
-					<input type="radio" id="novax" name="instchoice" value="novax" checked />
-					<label for="novax">NovaSeqX/X+</label>
-				</div>
-			</fieldset>
-			<button style="display:block; margin:2%" onclick=colorCompare()>Check for color balance</button>
-			<p id="i7colorcode" style="display:block; margin:1%">i7:</p>
-			<p id="i5colorcode" style="display:block; margin:1%">i5:</p>
+				<textarea id="index5List"; rows ="16";cols="50";></textarea><br>
+				<button style="display:block; margin:1%" id="i5rcButton">Reverse complement i5s</button>
+			</div>
 			
+			<div style="display:inline-block;vertical-align:top">
+			<div id="spacer" style="height:300px";></div>
+				<fieldset id="instrumentbox" style="width:100%; display:inline-block; margin: 2%;">
+					<legend>Select an instrument:</legend>
+
+					<div>
+						<input type="radio" id="iseq" name="instchoice" value="iseq" checked />
+						<label for="iseq">iSeq</label>
+					</div>
+					<div>
+						<input type="radio" id="miseq" name="instchoice" value="miseq" checked />
+						<label for="miseq">MiSeq</label>
+					</div>
+					<div>
+						<input type="radio" id="nextseq500" name="instchoice" value="nextseq" checked />
+						<label for="nextseq500">NextSeq500/550</label>
+					</div>
+					<div>
+						<input type="radio" id="miniseq" name="instchoice" value="nextseq" checked />
+						<label for="miniseq">MiniSeq</label>
+					</div>
+					<div>
+						<input type="radio" id="nextseq2000" name="instchoice" value="nextseq" checked />
+						<label for="nextseq2000">NextSeq1000/2000</label>
+					</div>
+					<div>
+						<input type="radio" id="nova" name="instchoice" value="nova" checked />
+						<label for="nova">NovaSeq6000</label>
+					</div>
+					<div>
+						<input type="radio" id="novax" name="instchoice" value="novax" checked />
+						<label for="novax">NovaSeqX/X+</label>
+					</div>
+				</fieldset>
+				<button style="display:block; margin:2%" onclick=colorCompare()>Check for color balance</button>
+				<p id="i7colorcode" style="display:block; margin:1%">i7:</p>
+				<p id="i5colorcode" style="display:block; margin:1%">i5:</p>
+				
+			</div>
+			<button style="display:block; margin:1%" onclick=indexCompare()>Check for collisions</button>
 		</div>
-		<button style="display:block; margin:1%" onclick=indexCompare()>Check for collisions</button>
 	</div>
 </body>
 </html>
@@ -410,7 +419,8 @@ function colorBalanceChecker(indexList,instType,whichIndex) {
 		for (i = 0; i < indexList.length; i++) {
 			tmpBase = sanitize(indexList[i][j]);
 			if (tmpBase == "Non-ACGTN Character encountered.\n") {
-				return tmpBase;
+				alert(tmpBase + indexList[i]);
+				return null;
 			}
 			else {
 				thisCycle[baseChart.indexOf(tmpBase)]++; 
@@ -543,6 +553,7 @@ function rcList(indexListID) {
 		sanitizedIndex = sanitize(indexList[rcIndex].trimEnd())
 		if (sanitizedIndex == "Non-ACGTN Character encountered.\n") {
 			validList= false;
+			alert(sanitizedIndex + indexList[rcIndex]);
 			break;
 		}
 		returnList = returnList + reverseComplement(sanitizedIndex);
