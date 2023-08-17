@@ -398,7 +398,7 @@ function colorBalanceChecker(indexList,instType,whichIndex) {
 	MiSeqIdeal = [["A","G"],["A","T"],["C","G"],["C","T"]]
 	NovaXIdeal = [["A","T"],["C","G"]] //C is both channels, A/T is blue/green
 	NovaXOkay = [["A","C"],["C","T"]] 
-	NovaXRedFlag = [["A","G"]]//blue + dark is particularly 
+	NovaXRedFlag = [["A","G"],["A","A"],["G","G"]]//blue + dark is particularly 
 	for (i = 0; i < indexList.length; i++) {	
 		if (indexList[i].length != indexList[0].length) {
 			returnMessage = "barcodes are different lengths";
@@ -430,38 +430,38 @@ function colorBalanceChecker(indexList,instType,whichIndex) {
 
 	switch (instType) {
 		case "iseq":
-			idealArray = assessBalance(fullReturn,iSeqIdeal);
-			okayArray = assessBalance(fullReturn,iSeqOkay);
+			idealArray = assessBalance(fullReturn,iSeqIdeal,"min");
+			okayArray = assessBalance(fullReturn,iSeqOkay,"min");
 			break;
 		case "miseq":
-			idealArray = assessBalance(fullReturn,MiSeqIdeal);
+			idealArray = assessBalance(fullReturn,MiSeqIdeal,"min");
 			break;
 		case "nextseq2000":
-			idealArray = assessBalance(fullReturn,MiniNextNovaIdeal);
-			okayArray = assessBalance(fullReturn,MiniNextNovaOkay);
+			idealArray = assessBalance(fullReturn,MiniNextNovaIdeal,"min");
+			okayArray = assessBalance(fullReturn,MiniNextNovaOkay,"min");
 			break;
 		case "nextseq500":
-			idealArray = assessBalance(fullReturn,MiniNextNovaIdeal);
-			okayArray = assessBalance(fullReturn,MiniNextNovaOkay);
+			idealArray = assessBalance(fullReturn,MiniNextNovaIdeal,"min");
+			okayArray = assessBalance(fullReturn,MiniNextNovaOkay,"min");
 			break;
 		case "miniseq":
-			idealArray = assessBalance(fullReturn,MiniNextNovaIdeal);
-			okayArray = assessBalance(fullReturn,MiniNextNovaOkay);
+			idealArray = assessBalance(fullReturn,MiniNextNovaIdeal,"min");
+			okayArray = assessBalance(fullReturn,MiniNextNovaOkay,"min");
 			break;
 		case "nova":
-			idealArray = assessBalance(fullReturn,MiniNextNovaIdeal);
-			okayArray = assessBalance(fullReturn,MiniNextNovaOkay);
+			idealArray = assessBalance(fullReturn,MiniNextNovaIdeal,"min");
+			okayArray = assessBalance(fullReturn,MiniNextNovaOkay,"min");
 			break;
 		case "novax":
-			idealArray = assessBalance(fullReturn,NovaXIdeal);
-			okayArray = assessBalance(fullReturn,NovaXOkay);
-			badArray = assessBalance(fullReturn,NovaXRedFlag);
+			idealArray = assessBalance(fullReturn,NovaXIdeal,"min");
+			okayArray = assessBalance(fullReturn,NovaXOkay,"min");
+			badArray = assessBalance(fullReturn,NovaXRedFlag,"max");
 			break;
 		}
 	
-	codered = "#A31F03"
-	red = "#ffd2cf"
-	yellow = "#faf4b6"
+	codered = "#882255"
+	red = "#CC6677"
+	yellow = "#DDCC77"
 
 	colorcodediv = ""
 	colorcodedtext = whichIndex + ": ";
@@ -496,19 +496,31 @@ function colorBalanceChecker(indexList,instType,whichIndex) {
 	colorcodediv.innerHTML = colorcodedtext;
 }
 
-function assessBalance(cycleBaseArrayList,instList) {
+function assessBalance(cycleBaseArrayList,instList,minmax) {
 	balanceList = [];
 	balanced = false;
 	baseComboList = instList;
-	
-	for (i = 0; i < cycleBaseArrayList.length; i++) {
-		balanced = false;
-		for (j = 0; j < baseComboList.length; j++) {
-			if (fullReturn[i][baseChart.indexOf(baseComboList[j][0])] >= 0.1 && cycleBaseArrayList[i][baseChart.indexOf(baseComboList[j][1])] >= 0.1) {
-				balanced = true;
+	if (minmax == "min") {
+		for (i = 0; i < cycleBaseArrayList.length; i++) {
+			balanced = false;
+			for (j = 0; j < baseComboList.length; j++) {
+				if (fullReturn[i][baseChart.indexOf(baseComboList[j][0])] >= 0.1 && cycleBaseArrayList[i][baseChart.indexOf(baseComboList[j][1])] >= 0.1) {
+					balanced = true;
+				}
 			}
+			balanceList.push(balanced)
 		}
-		balanceList.push(balanced)
+	}
+	else if (minmax == "max") {
+		for (i = 0; i < cycleBaseArrayList.length; i++) {
+			balanced = false;
+			for (j = 0; j < baseComboList.length; j++) {
+				if (fullReturn[i][baseChart.indexOf(baseComboList[j][0])] >= 0.33 && cycleBaseArrayList[i][baseChart.indexOf(baseComboList[j][1])] >= 0.33) {
+					balanced = true;
+				}
+			}
+			balanceList.push(balanced)
+		}
 	}
 	return balanceList;
 }
@@ -530,11 +542,10 @@ function rcList(indexListID) {
 	for (rcIndex = 0; rcIndex < indexList.length; rcIndex++) {
 		sanitizedIndex = sanitize(indexList[rcIndex].trimEnd())
 		if (sanitizedIndex == "Non-ACGTN Character encountered.\n") {
-			alert(sanitizedIndex + " (" + indexList[rcIndex] + ")");
 			validList= false;
 			break;
 		}
-		returnList = returnList + reverseComplement(indexList[rcIndex].trimEnd());
+		returnList = returnList + reverseComplement(sanitizedIndex);
 		if (rcIndex < indexList.length - 1) {
 			returnList = returnList + "\n"
 		}
