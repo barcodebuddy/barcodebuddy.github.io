@@ -258,7 +258,7 @@ input, select, textarea {
 		@media screen and (max-width: 1680px) {
 
 			html {
-				font-size: 1`pt;
+				font-size: 10pt;
 				font-size: 1.1vmax;
 			}
 
@@ -276,7 +276,7 @@ input, select, textarea {
 	body, input, select, textarea {
 		color: rgba(255, 255, 255, 0.75);
 		font-family: "Source Sans Pro", Helvetica, sans-serif;
-		font-size: 70px;
+		font-size: 24px;
 		font-weight: 300;
 		line-height: 1.65;
 	}
@@ -341,7 +341,7 @@ input, select, textarea {
 		}
 
 	h1 {
-		font-size: 200px;
+		font-size: 64px;
 		line-height: 1.2;
 	}
 
@@ -704,7 +704,7 @@ input, select, textarea {
 			color: rgba(255, 255, 255, 0.75);
 			cursor: pointer;
 			display: inline-block;
-			font-size: 60px;
+			font-size: 18px;
 			font-weight: 300;
 			margin-bottom: 0;
 			padding-left: 2.5rem;
@@ -1482,11 +1482,11 @@ input, select, textarea {
 		cursor: pointer;
 		display: inline-block;
 		font-family: Arial, Helvetica, sans-serif;
-		font-size: 40px;
-		font-weight: 700;
+		font-size: 16px;
+		font-weight: 400;
 		height: 2.75rem;
-		letter-spacing: 10px;
-		line-height: 2.75rem;
+		letter-spacing: 2px;
+		line-height: 20px;
 		padding: 0 1.5rem 0 1.65rem;
 		text-align: center;
 		text-decoration: none;
