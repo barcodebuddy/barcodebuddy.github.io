@@ -398,6 +398,7 @@ function colorBalanceChecker(indexList,instType,whichIndex) {
 	MiSeqIdeal = [["A","G"],["A","T"],["C","G"],["C","T"]]
 	NovaXIdeal = [["A","T"],["C","G"]] //C is both channels, A/T is blue/green
 	NovaXOkay = [["A","C"],["C","T"]] 
+	NovaXRedFlag = [["A","G"]]//blue + dark is particularly 
 	for (i = 0; i < indexList.length; i++) {	
 		if (indexList[i].length != indexList[0].length) {
 			returnMessage = "barcodes are different lengths";
@@ -425,6 +426,7 @@ function colorBalanceChecker(indexList,instType,whichIndex) {
 
 	idealArray = []
 	okayArray = []
+	badArray = []
 
 	switch (instType) {
 		case "iseq":
@@ -453,9 +455,11 @@ function colorBalanceChecker(indexList,instType,whichIndex) {
 		case "novax":
 			idealArray = assessBalance(fullReturn,NovaXIdeal);
 			okayArray = assessBalance(fullReturn,NovaXOkay);
+			badArray = assessBalance(fullReturn,NovaXRedFlag);
 			break;
 		}
 	
+	codered = "#A31F03"
 	red = "#ffd2cf"
 	yellow = "#faf4b6"
 
@@ -479,6 +483,10 @@ function colorBalanceChecker(indexList,instType,whichIndex) {
 		else if (okayArray[i] == true) {
 			finalReturnArray.push(1);
 			colorcodedtext = colorcodedtext + "<span style=background-color:" + yellow + ">" + (i+1) + "</span> "
+		}
+		else if (badArray[i] == true) {
+			finalReturnArray.push(1);
+			colorcodedtext = colorcodedtext + "<span style=background-color:" + codered + ">" + (i+1) + "</span> "
 		}
 		else {
 			finalReturnArray.push(2);
