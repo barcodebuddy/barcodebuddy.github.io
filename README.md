@@ -10,7 +10,7 @@ Best: AG, AT, CG, CT
 Better: AC, AG, AT, CT
 Best: AG, CT
 
-##### iSeq (dual image is A, neither image is G):
+##### iSeq (dual-image base is A, neither-image base is G):
 Better: AT,CT,GT,AC
 Best: AC,GT
 
