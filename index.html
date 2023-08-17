@@ -1,1 +1,546 @@
-"Hello World" 
+<!DOCTYPE html>
+
+<html>
+<head>
+</head>
+
+<body>
+	<h1 style="display:block">Barcode Buddy</h1>
+	Enter barcodes, each on a new line, here:<br><br>
+	<div>
+		<div id="entryArea_i7" style="display:inline-block; margin: 1%;">
+			<p style="margin:1px 0">i7</p>
+			<div>
+				<p style="display:inline-block">Mismatch tolerance: </p>
+				<input type="text" id="index7Mismatch"; style="width:15px; display:inline-block;" value=1></textarea>
+			</div>
+			<textarea id="index7List"; rows ="36";cols="50";></textarea><br>
+			<button style="display:block; margin:1%" id="i7rcButton">Reverse complement i7s</button>
+		</div>
+		<div id="entryArea_i5" style="display:inline-block; margin: 1%;">
+			<p style="margin:1px 0">i5</p>
+			<div>
+				<p style="display:inline-block">Mismatch tolerance: </p>
+				<input type="text" id="index5Mismatch"; style="width:15px; display:inline-block;" value=1></textarea>
+			</div>
+			<textarea id="index5List"; rows ="36";cols="50";></textarea><br>
+			<button style="display:block; margin:1%" id="i5rcButton">Reverse complement i5s</button>
+		</div>
+		
+		<div style="display:inline-block;vertical-align:top">
+		<div id="spacer" style="height:100px";></div>
+			<fieldset id="instrumentbox" style="width:100%; display:inline-block; margin: 2%;">
+				<legend>Select an instrument:</legend>
+
+				<div>
+					<input type="radio" id="iseq" name="instchoice" value="iseq" checked />
+					<label for="iseq">iSeq</label>
+				</div>
+				<div>
+					<input type="radio" id="miseq" name="instchoice" value="miseq" checked />
+					<label for="miseq">MiSeq</label>
+				</div>
+				<div>
+					<input type="radio" id="nextseq500" name="instchoice" value="nextseq" checked />
+					<label for="nextseq500">NextSeq500/550</label>
+				</div>
+				<div>
+					<input type="radio" id="miniseq" name="instchoice" value="nextseq" checked />
+					<label for="miniseq">MiniSeq</label>
+				</div>
+				<div>
+					<input type="radio" id="nextseq2000" name="instchoice" value="nextseq" checked />
+					<label for="nextseq2000">NextSeq1000/2000</label>
+				</div>
+				<div>
+					<input type="radio" id="nova" name="instchoice" value="nova" checked />
+					<label for="nova">NovaSeq6000</label>
+				</div>
+				<div>
+					<input type="radio" id="novax" name="instchoice" value="novax" checked />
+					<label for="novax">NovaSeqX/X+</label>
+				</div>
+			</fieldset>
+			<button style="display:block; margin:2%" onclick=colorCompare()>Check for color balance</button>
+			<p id="i7colorcode" style="display:block; margin:1%">i7:</p>
+			<p id="i5colorcode" style="display:block; margin:1%">i5:</p>
+			
+		</div>
+		<button style="display:block; margin:1%" onclick=indexCompare()>Check for collisions</button>
+	</div>
+</body>
+</html>
+
+<script>
+
+document.getElementById("i7rcButton").addEventListener("click", function() {
+    rcList("i7");
+}, false);
+
+document.getElementById("i5rcButton").addEventListener("click", function() {
+    rcList("i5");
+}, false);
+
+
+function hammingDistanceSingle(parsedList,barcodeMismatch) {
+
+	if (isNaN(barcodeMismatch)) {
+		returnMessage = "invalid mismatch tolerance"
+	}
+	if (parsedList.length <= 1) {
+		returnMessage = "please provide at least two indices to compare"
+	}
+	hammingDistanceCutoff = barcodeMismatch * 2;
+	returnMessage = "";
+	for (i = 0; i < parsedList.length - 1; i++) {
+		for (j = 1; (i + j) < parsedList.length; i++) {
+			collisionExample = "";
+			str1 = parsedList[i]
+			str2 = parsedList[i+j];
+			
+			oldstr1 = str1;
+			oldstr2 = str2;
+			
+			str1 = sanitize(str1)
+			str2 = sanitize(str2)
+					
+			if (str1 == "Non-ACGTN Character encountered.\n") {
+				returnMessage = returnMessage + oldstr1 + ": " + str1;
+				i = parsedList.length;
+			}
+			
+			if (str2 == "Non-ACGTN Character encountered.\n") {
+				returnMessage = returnMessage + oldstr2 + ": " + str2;
+				i = parsedList.length;
+			}
+
+		   if (returnMessage == "" && str1.length !== str2.length) {
+			  returnMessage = str1 + " and " + str2 + " do not match in length";
+			  i = parsedList.length;
+		   }
+		   
+		   else if (returnMessage == "") {
+				dist = 0;
+				for (k = 0; k < str1.length; k += 1) {
+				  if (str1[k] !== str2[k]) {
+					 dist += 1;
+					 if (k < hammingDistanceCutoff / 2) {
+						collisionExample += str1[k];
+					 }
+					 else {
+					 	collisionExample += str2[k];
+					 }
+				  }
+				  else {
+				  	collisionExample = collisionExample += str1[k];
+				  }
+			   };
+			   if (dist <= hammingDistanceCutoff) {
+					returnMessage = "are invalid; " + "the ambiguous barcode " + collisionExample + " cannot be resolved between " + str1 + " and " + str2 + ". For a mismatch tolerance of " + barcodeMismatch + ", a minimum Hamming distance of " + (hammingDistanceCutoff + 1) + " is needed.";
+					i = parsedList.length;
+			   }
+			}
+		}
+	}
+	if (returnMessage == "") {
+		returnMessage = "indices are sufficiently far apart."
+	}
+   return returnMessage;
+};
+
+function hammingDistanceDual(parsedList1,parsedList2,barcodeMismatch7,barcodeMismatch5) {
+
+	returnMessage = "";
+	if (isNaN(barcodeMismatch7)) {
+		returnMessage = "invalid i7 mismatch tolerance"
+	}
+	else {
+		hammingDistanceCutoff7 = barcodeMismatch7 * 2;
+	}
+	if (isNaN(barcodeMismatch5 == NaN)) {
+		returnMessage = "invalid i5 mismatch tolerance"
+	}
+	else {
+		hammingDistanceCutoff5 = barcodeMismatch5 * 2;
+	}
+	
+	if (returnMessage == "") {
+		i7Tracker = [];
+		returnMessage = "";
+		if (parsedList1.length != parsedList2.length) {
+			returnMessage = "incomplete barcode pairs";
+			i = parsedList1.length;
+		}
+		if (parsedList1.length <= 1) {
+			returnMessage = "please provide at least two indices to compare"
+		}
+		if (returnMessage == "") {
+			for (i = 0; i < parsedList1.length - 1; i++) {
+					for (j = 1; (i + j) < parsedList1.length; j++) {
+					collisionExample = "";
+					invalidi7Combo = false;
+					str1 = parsedList1[i]
+					str2 = parsedList1[i+j];
+					
+					oldstr1 = str1;
+					oldstr2 = str2;
+					
+					str1 = sanitize(str1)
+					str2 = sanitize(str2)
+					
+					returnMessage = "";
+					if (str1 == "Non-ACGTN Character encountered.\n") {
+						returnMessage = returnMessage + "i7 " + oldstr1 + ": " + str1;
+						i = parsedList1.length;
+					}
+					if (str2 == "Non-ACGTN Character encountered.\n") {
+						returnMessage = returnMessage + "i7 " + oldstr2 + ": " + str2;
+						i = parsedList1.length;
+					}
+					if (returnMessage == "") {
+						if (str1.length !== str2.length) {
+						  returnMessage = "i7 " + str1 + " and " + str2 + " do not match in length";
+						  i = parsedList1.length;
+						}
+						else {
+							dist = 0;
+							for (k = 0; k < str1.length; k += 1) {
+							  if (str1[k] !== str2[k]) {
+								 dist += 1;
+								 if (k < hammingDistanceCutoff7 / 2) {
+									collisionExample += str1[k];
+								 }
+								 else {
+									collisionExample += str2[k];
+								 }
+							  }
+							  else {
+								collisionExample = collisionExample += str1[k];
+							  }
+						   };
+						   if (dist <= hammingDistanceCutoff7) {
+								i7Tracker.push([false,str1,str2,collisionExample]);
+								invalidi7Combo = true;
+						   }
+						}
+						if (!invalidi7Combo) {
+							i7Tracker.push([true,str1,str2,collisionExample]);
+						}
+					}
+				}
+			}
+			
+
+			i5Tracker = [];
+			for (i = 0; i < parsedList2.length - 1; i++) {
+				for (j = 1; (i + j) < parsedList2.length; j++) {
+					collisionExample = "";
+					invalidi5Combo = false;
+					str1 = parsedList2[i]
+					str2 = parsedList2[i+j];
+					
+					oldstr1 = str1;
+					oldstr2 = str2;
+					
+					str1 = sanitize(str1)
+					str2 = sanitize(str2)
+					
+					returnMessage = returnMessage + "";
+					if (str1 == "Non-ACGTN Character encountered.\n") {
+						returnMessage = returnMessage + "i5 " + oldstr1 + ": " + str1;
+						i = parsedList1.length;
+					}
+					if (str2 == "Non-ACGTN Character encountered.\n") {
+						returnMessage = returnMessage + "i5 " + oldstr2 + ": " + str2;
+						i = parsedList1.length;
+					}
+					if (returnMessage == "") {
+						if (str1.length !== str2.length) {
+						  returnMessage = "i5 " + str1 + " and " + str2 + " do not match in length";
+						  i = parsedList1.length;
+						}
+						else {
+							dist = 0;
+							for (k = 0; k < str1.length; k += 1) {
+							  if (str1[k] !== str2[k]) {
+								 dist += 1;
+								 if (k <= hammingDistanceCutoff5) {
+									collisionExample += str1[k];
+								 }
+								 else {
+									collisionExample += str2[k];
+								 }
+							  }
+							  else {
+								collisionExample = collisionExample += str1[k];
+							  }
+							};
+							if (dist <= hammingDistanceCutoff5) {
+								i5Tracker.push([false,str1,str2,collisionExample]); //this combination will have a collision
+								invalidi5Combo = true;
+							}
+						}
+						if (!invalidi5Combo) {
+							i5Tracker.push([true,str1,str2,collisionExample]);			
+						}
+					}
+				}
+			}
+		}
+	}
+	if (returnMessage == "") {
+		invalidPair = false;
+		for (k = 0; k < i7Tracker.length; k++) {
+			if (!i7Tracker[k][0] && !i5Tracker[k][0]) {
+				returnMessage = " The ambiguous barcode " + i7Tracker[k][3] + "/" + i5Tracker[k][3] + " cannot be resolved between the index pair of i7/i5 " + i7Tracker[k][1] + "/" + i5Tracker[k][1] + " and " +  i7Tracker[k][2] + "/" + i5Tracker[k][2];
+				returnMessage = returnMessage + ". For an i7 mismatch tolerance of " + barcodeMismatch7 + ", a minimum Hamming distance of " + (hammingDistanceCutoff7 + 1) + " is needed."
+				returnMessage = returnMessage + " For an i5 mismatch tolerance of " + barcodeMismatch5 + ", a minimum Hamming distance of " + (hammingDistanceCutoff5 + 1) + " is needed."
+				invalidPair = true;
+			}
+		}
+		if (!invalidPair && i7Tracker.length > 0 && i5Tracker.length > 0) {
+			returnMessage = "Indices in combination are sufficiently far apart."
+			returnMessage = returnMessage + "\n\nSeparately, the i7 " + hammingDistanceSingle(parsedList1,barcodeMismatch7);
+			returnMessage = returnMessage + " Separately, the i5 " + hammingDistanceSingle(parsedList2,barcodeMismatch5);
+		}	
+	}
+	if (returnMessage == "") {
+		returnMessage = "indices are sufficiently far apart"
+	}
+	return returnMessage;
+};
+
+function reverseComplement(sequence) {
+    reverseComplementSeq = ""
+    for (base = sequence.length - 1; base >= 0; base--) {
+        if (sequence[base] == 'A') {
+            reverseComplementSeq += 'T'
+		}
+        else if (sequence[base] == 'C') {
+            reverseComplementSeq += 'G'
+        }
+		else if (sequence[base] == 'G') {
+            reverseComplementSeq += 'C'
+        }
+		else if (sequence[base] == 'T') {
+            reverseComplementSeq += 'A'
+        }
+		else if (sequence[base] == 'N') {
+            reverseComplementSeq += 'N'
+        }
+		else {
+			reverseComplementSeq += sequence[base]
+			alert("Non-ACGTN Character encountered.\n")
+        }
+	}
+	return reverseComplementSeq
+}
+
+function sanitize(index) {
+	validBases = ['A','C','T','G','N']
+	index = index.toUpperCase();
+	for (indexPos = 0; indexPos < index.length; indexPos++) {
+		if (!validBases.includes(index[indexPos])) {
+			return "Non-ACGTN Character encountered.\n"
+		}
+	}
+	return index;
+}
+
+function removeWhitespaceElements(array) {
+	return array.filter(function(str) {return /\S/.test(str); });
+}
+
+function indexCompare() {
+
+	i7List = document.getElementById("index7List").value.trimEnd().split("\n");
+	i5List = document.getElementById("index5List").value.trimEnd().split("\n");
+	
+	
+	barcodeMismatch7 = parseInt(document.getElementById("index7Mismatch").value);
+	barcodeMismatch5 = parseInt(document.getElementById("index5Mismatch").value)
+	
+	document.getElementById("index7Mismatch").value = barcodeMismatch7;
+	document.getElementById("index5Mismatch").value = barcodeMismatch5;
+	
+	if (i5List.length == 1 && i5List[0] == "")  {
+		singleHammingCheck = hammingDistanceSingle(i7List,barcodeMismatch7)
+		alert("i7 indices " + singleHammingCheck);
+	}
+	else if (i7List.length == 1 && i7List[0] == "")  {
+		singleHammingCheck = hammingDistanceSingle(i5List,barcodeMismatch5)
+		alert("i5 indices " + singleHammingCheck);
+	}
+	else {
+		hammingCheck = hammingDistanceDual(i7List,i5List,barcodeMismatch7,barcodeMismatch5)
+		alert(hammingCheck);
+	}
+	
+}
+
+function colorCompare() {
+	selectedButton = document.querySelector("[name=instchoice]:checked").id;
+	i7List = document.getElementById("index7List").value.trimEnd().split("\n");
+	i5List = document.getElementById("index5List").value.trimEnd().split("\n");
+	
+	colorBalanceChecker(i7List,selectedButton,"i7")
+	colorBalanceChecker(i5List,selectedButton,"i5")
+}
+
+function colorBalanceChecker(indexList,instType,whichIndex) {
+	fullReturn = [];
+	baseChart = ["A","C","T","G"];
+	thisCycle = [0,0,0,0]; //A,C,T,G
+	iSeqIdeal = [["A","C"],["T","G"]] 
+	iSeqOkay = [["A","T"],["C","T"]] //G is off 2x, avoid G + a base that is also off once
+	MiniNextNovaIdeal = [["A","G"],["C","T"]] //A is both channels, C/T is blue/green
+	MiniNextNovaOkay = [["A","C"],["A","T"]]
+	MiSeqIdeal = [["A","G"],["A","T"],["C","G"],["C","T"]]
+	NovaXIdeal = [["A","T"],["C","G"]] //C is both channels, A/T is blue/green
+	NovaXOkay = [["A","C"],["C","T"]] 
+	for (i = 0; i < indexList.length; i++) {	
+		if (indexList[i].length != indexList[0].length) {
+			returnMessage = "barcodes are different lengths";
+			return returnMessage;
+		}
+	}
+	for (j = 0; j < indexList[0].length; j++) {
+		thisCycle = [0,0,0,0]; 
+		for (i = 0; i < indexList.length; i++) {
+			tmpBase = sanitize(indexList[i][j]);
+			if (tmpBase == "Non-ACGTN Character encountered.\n") {
+				return tmpBase;
+			}
+			else {
+				thisCycle[baseChart.indexOf(tmpBase)]++; 
+			}
+		}
+		for (k = 0; k < thisCycle.length; k++) {
+			thisCycle[k] = thisCycle[k] / indexList.length;
+		}
+		fullReturn.push(thisCycle);
+	}
+	console.log(fullReturn)
+	returnMessage = "";
+
+	idealArray = []
+	okayArray = []
+
+	switch (instType) {
+		case "iseq":
+			idealArray = assessBalance(fullReturn,iSeqIdeal);
+			okayArray = assessBalance(fullReturn,iSeqOkay);
+			break;
+		case "miseq":
+			idealArray = assessBalance(fullReturn,MiSeqIdeal);
+			break;
+		case "nextseq2000":
+			idealArray = assessBalance(fullReturn,MiniNextNovaIdeal);
+			okayArray = assessBalance(fullReturn,MiniNextNovaOkay);
+			break;
+		case "nextseq500":
+			idealArray = assessBalance(fullReturn,MiniNextNovaIdeal);
+			okayArray = assessBalance(fullReturn,MiniNextNovaOkay);
+			break;
+		case "miniseq":
+			idealArray = assessBalance(fullReturn,MiniNextNovaIdeal);
+			okayArray = assessBalance(fullReturn,MiniNextNovaOkay);
+			break;
+		case "nova":
+			idealArray = assessBalance(fullReturn,MiniNextNovaIdeal);
+			okayArray = assessBalance(fullReturn,MiniNextNovaOkay);
+			break;
+		case "novax":
+			idealArray = assessBalance(fullReturn,NovaXIdeal);
+			okayArray = assessBalance(fullReturn,NovaXOkay);
+			break;
+		}
+	
+	red = "#ffd2cf"
+	yellow = "#faf4b6"
+
+	colorcodediv = ""
+	colorcodedtext = whichIndex + ": ";
+	if (whichIndex == "i7") {
+		colorcodediv = document.getElementById("i7colorcode")
+	}
+	else if (whichIndex == "i5") {
+		colorcodediv = document.getElementById("i5colorcode")
+	}
+	finalReturnArray = [];
+	if (okayArray.length == 0) {
+		okayArray = Array(idealArray.length).fill(false);
+	}
+	for (i = 0; i < idealArray.length; i++) {
+		if (idealArray[i] == true) {
+			finalReturnArray.push(0);
+			colorcodedtext = colorcodedtext + "<span>" + (i+1) + "</span> "
+		}
+		else if (okayArray[i] == true) {
+			finalReturnArray.push(1);
+			colorcodedtext = colorcodedtext + "<span style=background-color:" + yellow + ">" + (i+1) + "</span> "
+		}
+		else {
+			finalReturnArray.push(2);
+			colorcodedtext = colorcodedtext + "<span style=background-color:" + red + ">" + (i+1) + "</span> "
+		}
+	}
+	colorcodediv.innerHTML = colorcodedtext;
+}
+
+function assessBalance(cycleBaseArrayList,instList) {
+	balanceList = [];
+	balanced = false;
+	baseComboList = instList;
+	
+	for (i = 0; i < cycleBaseArrayList.length; i++) {
+		balanced = false;
+		for (j = 0; j < baseComboList.length; j++) {
+			if (fullReturn[i][baseChart.indexOf(baseComboList[j][0])] >= 0.1 && cycleBaseArrayList[i][baseChart.indexOf(baseComboList[j][1])] >= 0.1) {
+				balanced = true;
+			}
+		}
+		balanceList.push(balanced)
+	}
+	return balanceList;
+}
+
+function rcList(indexListID) {
+	returnList = "";
+	indexHTML = "";
+	validList = true;
+	if (indexListID == "i7") {
+		indexHTML = document.getElementById("index7List")
+	}
+	else if (indexListID == "i5") {
+		indexHTML = document.getElementById("index5List")
+	}
+	else {
+		return null
+	}
+	indexList = indexHTML.value.trimEnd().split("\n")
+	for (rcIndex = 0; rcIndex < indexList.length; rcIndex++) {
+		sanitizedIndex = sanitize(indexList[rcIndex].trimEnd())
+		if (sanitizedIndex == "Non-ACGTN Character encountered.\n") {
+			alert(sanitizedIndex + " (" + indexList[rcIndex] + ")");
+			validList= false;
+			break;
+		}
+		returnList = returnList + reverseComplement(indexList[rcIndex].trimEnd());
+		if (rcIndex < indexList.length - 1) {
+			returnList = returnList + "\n"
+		}
+	}
+	if (validList) {
+		indexHTML.value = returnList;
+	}
+}
+
+function getMatchingIndices(array,value) {
+    indexArr = array.map((element, index) =>
+                     (element === value ? index : -1))
+        .filter(element => element !== -1);
+    return indexArr;
+}
+
+</script>
