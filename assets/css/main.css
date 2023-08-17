@@ -1482,11 +1482,11 @@ input, select, textarea {
 		cursor: pointer;
 		display: inline-block;
 		font-family: Arial, Helvetica, sans-serif;
-		font-size: 14px;
+		font-size: 12px;
 		font-weight: 400;
-		height: 2.75rem;
+		height: 40px;
 		letter-spacing: 2px;
-		line-height: 20px;
+		line-height: 10px;
 		padding: 0 1.5rem 0 1.65rem;
 		text-align: center;
 		text-decoration: none;
