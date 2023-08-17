@@ -16,27 +16,27 @@
 			<p style="display:block;margin: 0% 0% 0% 1%">Enter barcodes, each on a new line, here:<br></p>
 		</div>
 		<div>
-			<div id="entryArea_i7" style="width:30%; display:inline-block; margin: 1% 1% 0% 1%;">
+			<div id="entryArea_i7" style="width:20%; display:inline-block; margin: 1% 1% 0% 1%;">
 				<p style="margin:1px 0">i7</p>
 				<div>
 					<p style="display:inline-block">Mismatch tolerance: </p>
-					<input type="text" id="index7Mismatch"; style="width:150px; display:inline-block;text-align:center;" value=1></textarea>
+					<input type="text" id="index7Mismatch"; style="width:50px; display:inline-block;text-align:center;" value=1></textarea>
 				</div>
 				<textarea id="index7List"; rows ="16";cols="50";></textarea><br>
 				<button style="display:block; margin:1%" id="i7rcButton">Reverse complement i7s</button>
 			</div>
-			<div id="entryArea_i5" style="width:30%; display:inline-block; margin: 1% 1% 0% 1%;">
+			<div id="entryArea_i5" style="width:20%; display:inline-block; margin: 1% 1% 0% 1%;">
 				<p style="margin:1px 0">i5</p>
 				<div>
 					<p style="display:inline-block">Mismatch tolerance: </p>
-					<input type="text" id="index5Mismatch"; style="width:150px; display:inline-block;text-align:center;" value=1></textarea>
+					<input type="text" id="index5Mismatch"; style="width:50px; display:inline-block;text-align:center;" value=1></textarea>
 				</div>
 				<textarea id="index5List"; rows ="16";cols="50";></textarea><br>
 				<button style="display:block; margin:1%" id="i5rcButton">Reverse complement i5s</button>
 			</div>
 			
-			<div style="width:30%;display:inline-block;vertical-align:top">
-			<div id="spacer" style="height:300px";></div>
+			<div style="width:20%;display:inline-block;vertical-align:top">
+			<div id="spacer" style="height:200px";></div>
 				<fieldset id="instrumentbox" style="width:100%; display:inline-block; margin: 2%;">
 					<legend>Select an instrument:</legend>
 
@@ -70,9 +70,12 @@
 					</div>
 				</fieldset>
 				<button style="display:block; margin:2%" onclick=colorCompare()>Check for color balance</button>
-				<p id="i7colorcode" style="display:block; margin:1%">i7:</p>
-				<p id="i5colorcode" style="display:block; margin:1%">i5:</p>
-				
+				<div>
+					<p style="display:inline-block">i7: </p><p id="i7colorcode" style="display:inline-block; margin:1%;background-color: rgba(255,255,255,.2)"></p>
+				</div>
+				<div>
+					<p style="display:inline-block">i5: </p><p id="i5colorcode" style="display:inline-block; margin:1%;background-color: rgba(255,255,255,.2)"></p>
+				</div>
 			</div>
 			<button style="display:block; margin:1%" onclick=indexCompare()>Check for collisions</button>
 		</div>
@@ -488,7 +491,7 @@ function colorBalanceChecker(indexList,instType,whichIndex) {
 	for (i = 0; i < idealArray.length; i++) {
 		if (idealArray[i] == true) {
 			finalReturnArray.push(0);
-			colorcodedtext = colorcodedtext + "<span>" + (i+1) + "</span> "
+			colorcodedtext = "<span>" + (i+1) + "</span> "
 		}
 		else if (okayArray[i] == true) {
 			finalReturnArray.push(1);
