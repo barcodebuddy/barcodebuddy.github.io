@@ -58,4 +58,6 @@ Following the above rules, we can construct A (same base) + AA (first n bases of
 
 This sequence is 2 away from both X (positions 4 and 5) and Y (positions 2 and 3), and thus would be an ambiguous barcode at mismatch tolerance 2. Mismatch tolerance must be lowered, or a more distinct pair of barcodes must be used, to avoid this.
 
+----
 
+For a dual-indexed run, in  BCL Convert v3.10.5 - v4.0.3 both indices must be independently distinct to be considered valid in combination. In other versions of BCL Convert and other demultiplexing workflows, the indices being distinct in combination is sufficient regardless of potential ambiguity when considered separately.
