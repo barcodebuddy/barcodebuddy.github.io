@@ -8,7 +8,7 @@ Enter indices in the text boxes, each index on a new row. Leaving one of the box
 &nbsp;
 
 ### Color Balance
-Calculates proportion of each nucleotide per position. If at least 10% for each base in a "best" pair listed below is present, base will be unannotated for "best". Otherwise if at least 10% for each base in a "better" pair is present, base will be annotated in yellow for "okay". If at least 66% of the total bases at that position are a combination considered particularly poor, it will be annotated dark red for "very poor". Otherwise, if no "best" or "better" pair for that instrument is present with at least 10% per base, it will be annotated light red for "poor".
+Calculates proportion of each nucleotide per position. If at least 10% for each base in a "best" pair listed below is present, it will be unannotated for "best". Otherwise if at least 10% for each base in a "better" pair is present, it will be annotated in yellow for "okay". If at least 66% of the total bases at that position are a combination considered particularly poor, it will be annotated dark red for "very poor". Otherwise, if no "best" or "better" pair for that instrument is present with at least 10% per base, it will be annotated light red for "poor".
 
 ##### MiSeq:
 Best: AG, AT, CG, CT
