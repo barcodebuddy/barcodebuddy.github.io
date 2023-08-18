@@ -8,15 +8,15 @@ Enter indices in the text boxes, each index on a new row. Leaving one of the box
 &nbsp;
 
 ### Color Balance
-Calculates proportion of each nucleotide per position. If at least 10% for each base in a "best" pair listed below is present, base will be unannotated. Otherwise if at least 10% for each base in a "better" pair is present, base will be annotated in yellow. If no pair for that instrument is present with at least 10% per base, it will be annotated in red. If at least 66% of the total bases at that position are a combination considered particularly poor, it will be annotated dark red.
+Calculates proportion of each nucleotide per position. If at least 10% for each base in a "best" pair listed below is present, base will be unannotated for "best". Otherwise if at least 10% for each base in a "better" pair is present, base will be annotated in yellow for "okay". If at least 66% of the total bases at that position are a combination considered particularly poor, it will be annotated dark red for "very poor". Otherwise, if no "best" or "better" pair for that instrument is present with at least 10% per base, it will be annotated light red for "poor".
 
 ##### MiSeq:
 Best: AG, AT, CG, CT
 
 ##### MiniSeq, NextSeq500/550, NextSeq1000/2000, NovaSeq6000 (dual-channel base is A, no-channel base is G):
-Better: AC, AG, AT, CT
-
 Best: AG, CT
+
+Better: AC, AG, AT, CT
 
 ##### iSeq (dual-image base is A, neither-image base is G):
 Best: AC,GT
