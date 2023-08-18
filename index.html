@@ -418,7 +418,7 @@ function colorBalanceChecker(indexList,instType,whichIndex) {
 	MiSeqIdeal = [["A","G"],["A","T"],["C","G"],["C","T"]]
 	NovaXIdeal = [["A","T"],["C","G"]] //C is both channels, A/T is blue/green
 	NovaXOkay = [["A","C"],["C","T"]] 
-	NovaXRedFlag = [["A","G"],["A","A"],["G","G"]]//blue channel + neither channel is a particularly poor combination on the X
+	NovaXRedFlag = [["A","G"]]//blue channel + neither channel is a particularly poor combination on the X
 	for (i = 0; i < indexList.length; i++) {	
 		if (indexList[i].length != indexList[0].length) {
 			returnMessage = whichIndex + " barcodes are different lengths";
@@ -526,7 +526,7 @@ function assessBalance(cycleBaseArrayList,instList,minmax) {
 		for (i = 0; i < cycleBaseArrayList.length; i++) {
 			balanced = false;
 			for (j = 0; j < baseComboList.length; j++) {
-				if (fullReturn[i][baseChart.indexOf(baseComboList[j][0])] >= 0.1 && cycleBaseArrayList[i][baseChart.indexOf(baseComboList[j][1])] >= 0.1) {
+				if (cycleBaseArrayList[i][baseChart.indexOf(baseComboList[j][0])] >= 0.1 && cycleBaseArrayList[i][baseChart.indexOf(baseComboList[j][1])] >= 0.1) {
 					balanced = true;
 				}
 			}
@@ -537,7 +537,8 @@ function assessBalance(cycleBaseArrayList,instList,minmax) {
 		for (i = 0; i < cycleBaseArrayList.length; i++) {
 			balanced = false;
 			for (j = 0; j < baseComboList.length; j++) {
-				if (fullReturn[i][baseChart.indexOf(baseComboList[j][0])] + cycleBaseArrayList[i][baseChart.indexOf(baseComboList[j][1])] >= 0.66) {
+			//check whether the sum of the proportion of both bases is over 0.66
+				if (cycleBaseArrayList[i][baseChart.indexOf(baseComboList[j][0])] + cycleBaseArrayList[i][baseChart.indexOf(baseComboList[j][1])] >= 0.66) {
 					balanced = true;
 				}
 			}
