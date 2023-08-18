@@ -419,7 +419,8 @@ function colorBalanceChecker(indexList,instType,whichIndex) {
 	NovaXRedFlag = [["A","G"],["A","A"],["G","G"]]//blue channel + neither channel is a particularly poor combination on the X
 	for (i = 0; i < indexList.length; i++) {	
 		if (indexList[i].length != indexList[0].length) {
-			returnMessage = "barcodes are different lengths";
+			returnMessage = whichIndex + " barcodes are different lengths";
+			alert(returnMessage);
 			return returnMessage;
 		}
 	}
