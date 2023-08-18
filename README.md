@@ -1,7 +1,30 @@
 # barcodebuddy.github.io
 
+### How to Use
+Enter indices in the text boxes, each index on a new row. Leaving one of the boxes empty will run single-indexed checking. All indices in a list must be of the same length, and use only ACTGN characters. If both boxes have text in them, dual-indexed checking will be run. The number of indices in the i7 and i5 must match in this case.
+
+&nbsp;
+
 ### Color Balance
 Calculates proportion of each nucleotide per position. If at least 10% for each base in a "best" pair listed below is present, base will be unannotated. Otherwise if at least 10% for each base in a "better" pair is present, base will be annotated in yellow. If no pair for that instrument is present with at least 10% per base, it will be annotated in red. If at least 66% of the total bases at that position are a combination considered particularly poor, it will be annotated dark red.
+
+##### MiSeq:
+Best: AG, AT, CG, CT
+
+##### MiniSeq,NextSeq500/550,NextSeq1000,2000,NovaSeq6000 (dual-channel base is A, no-channel base is G):
+Better: AC, AG, AT, CT
+Best: AG, CT
+
+##### iSeq (dual-image base is A, neither-image base is G):
+Best: AC,GT
+Better: AT,CT,GT,AC
+
+##### NovaSeqX (dual-channel base is C, no-channel base is G):
+Best: AT, CG
+Better: AC, CT
+Very Poor: AG, mono-A, mono-G
+
+&nbsp;
 
 **Ex, NovaSeqX i7 index sequences as follows:**
 
@@ -23,18 +46,16 @@ Position 4 has 50% A and 50% C. This is not one of the "best" pairs, but it is o
 
 &nbsp;
 
-##### MiSeq:
-Best: AG, AT, CG, CT
+### Collision Checking
 
-##### MiniSeq,NextSeq500/550,NextSeq1000,2000,NovaSeq6000 (dual-channel base is A, no-channel base is G):
-Better: AC, AG, AT, CT
-Best: AG, CT
+For mismatch tolerance n, the minimum Hamming distance required between any pair of indices will be 2n + 1. This can be seen as follows:
 
-##### iSeq (dual-image base is A, neither-image base is G):
-Best: AC,GT
-Better: AT,CT,GT,AC
+Given sequences X and Y of arbitrary but equal length that are identical except in 2n positions, we can construct a third sequence that is < n away from both of them with the following rules. If both sequences have the same sequence at the position, use the same base for the third string. If the sequences differ, then use the base from sequence X until we have used n bases from sequence X, then use the base from sequence Y from then on.
 
-##### NovaSeqX (dual-channel base is C, no-channel base is G):
-Best: AT, CG
-Better: AC, CT
-Very Poor: AG, mono-A, mono-G
+For example, let mismatch tolerance n = **2**, X = **AAAAAA**, Y = **ATTTTA**. X and Y are 4 apart in Hamming distance, differing at positions 2-6.
+
+Following the above rules, we can construct A (same base) + AA (first n bases of sequence X) + TT (remaining bases from sequence Y) + A = **AAATTA**
+
+This sequence is 2 away from both X (positions 4 and 5) and Y (positions 2 and 3), and thus would be an ambiguous barcode at mismatch tolerance 2. Mismatch tolerance must be lowered, or a more distinct pair of barcodes must be used, to avoid this.
+
+
