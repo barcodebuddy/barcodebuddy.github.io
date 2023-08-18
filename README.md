@@ -11,7 +11,7 @@ Calculates proportion of each nucleotide per position. If at least 10% for each 
 ##### MiSeq:
 Best: AG, AT, CG, CT
 
-##### MiniSeq,NextSeq500/550,NextSeq1000,2000,NovaSeq6000 (dual-channel base is A, no-channel base is G):
+##### MiniSeq, NextSeq500/550, NextSeq1000/2000, NovaSeq6000 (dual-channel base is A, no-channel base is G):
 Better: AC, AG, AT, CT
 Best: AG, CT
 
@@ -19,7 +19,7 @@ Best: AG, CT
 Best: AC,GT
 Better: AT,CT,GT,AC
 
-##### NovaSeqX (dual-channel base is C, no-channel base is G):
+##### NovaSeqX/X+ (dual-channel base is C, no-channel base is G):
 Best: AT, CG
 Better: AC, CT
 Very Poor: AG, mono-A, mono-G
