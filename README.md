@@ -52,9 +52,9 @@ Position 4 has 50% A and 50% C. This is not one of the "best" pairs, but it is o
 
 ### Collision Checking
 
-For mismatch tolerance n, the minimum Hamming distance required between any pair of indices will be 2n + 1. This can be seen as follows:
+For mismatch tolerance *n*, the minimum Hamming distance required between any pair of indices will be 2n + 1. This can be seen as follows:
 
-Given sequences X and Y of arbitrary but equal length that are identical except in 2n positions, we can construct a third sequence that is < n away from both of them with the following rules. If both sequences have the same sequence at the position, use the same base for the third string. If the sequences differ, then use the base from sequence X until we have used n bases from sequence X, then use the base from sequence Y from then on.
+Given sequences X and Y of arbitrary but equal length that are identical except in 2n positions, we can construct a third sequence that is <= n away from both of them with the following rules. If both sequences have the same sequence at the position, use the same base for the third string. If the sequences differ, then use the base from sequence X until we have used n bases from sequence X, then use the base from sequence Y from then on.
 
 For example, let mismatch tolerance n = **2**, X = **AAAAAA**, Y = **ATTTTA**. X and Y are 4 apart in Hamming distance, differing at positions 2-6.
 
