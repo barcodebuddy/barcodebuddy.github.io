@@ -5,7 +5,7 @@
 	<title>Barcode Buddy</title>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-	<link rel="stylesheet" href="assets/css/main.css" />
+	<link rel="stylesheet" href="assets/css/main.css" /> <!--CSS based on https://html5up.net/ethereal-->
 	<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 </head>
 
@@ -143,7 +143,7 @@ function hammingDistanceSingle(parsedList,barcodeMismatch) {
 				  if (str1[k] !== str2[k]) {
 					 dist += 1;
 					 if (k < hammingDistanceCutoff / 2) {
-						collisionExample += str1[k];
+						collisionExample += str1[k]; //see README for proof of ambiguous barcode construction
 					 }
 					 else {
 					 	collisionExample += str2[k];
@@ -410,13 +410,13 @@ function colorBalanceChecker(indexList,instType,whichIndex) {
 	baseChart = ["A","C","T","G"];
 	thisCycle = [0,0,0,0]; //A,C,T,G
 	iSeqIdeal = [["A","C"],["T","G"]] 
-	iSeqOkay = [["A","T"],["C","T"]] //G is off 2x, avoid G + a base that is also off once
+	iSeqOkay = [["A","T"],["C","T"]] //G is off for both images, avoid G + a base that is also off for one of the images as well
 	MiniNextNovaIdeal = [["A","G"],["C","T"]] //A is both channels, C/T is blue/green
 	MiniNextNovaOkay = [["A","C"],["A","T"]]
 	MiSeqIdeal = [["A","G"],["A","T"],["C","G"],["C","T"]]
 	NovaXIdeal = [["A","T"],["C","G"]] //C is both channels, A/T is blue/green
 	NovaXOkay = [["A","C"],["C","T"]] 
-	NovaXRedFlag = [["A","G"],["A","A"],["G","G"]]//blue + dark is particularly 
+	NovaXRedFlag = [["A","G"],["A","A"],["G","G"]]//blue channel + neither channel is a particularly poor combination on the X
 	for (i = 0; i < indexList.length; i++) {	
 		if (indexList[i].length != indexList[0].length) {
 			returnMessage = "barcodes are different lengths";
