@@ -106,7 +106,8 @@ document.getElementById("i5rcButton").addEventListener("click", function() {
 function hammingDistanceSingle(parsedList,barcodeMismatch) {
 
 	if (isNaN(barcodeMismatch)) {
-		returnMessage = "invalid mismatch tolerance"
+		returnMessage = "mismatch tolerance invalid"
+		return returnMessage;
 	}
 	if (parsedList.length <= 1) {
 		returnMessage = "please provide at least two indices to compare"
@@ -173,13 +174,15 @@ function hammingDistanceDual(parsedList1,parsedList2,barcodeMismatch7,barcodeMis
 
 	returnMessage = "";
 	if (isNaN(barcodeMismatch7)) {
-		returnMessage = "invalid i7 mismatch tolerance"
+		returnMessage = "i7 mismatch tolerance invalid"
+		return returnMessage;
 	}
 	else {
 		hammingDistanceCutoff7 = barcodeMismatch7 * 2;
 	}
-	if (isNaN(barcodeMismatch5 == NaN)) {
-		returnMessage = "invalid i5 mismatch tolerance"
+	if (isNaN(barcodeMismatch5)) {
+		returnMessage = "i5 mismatch tolerance invalid"
+		return returnMessage;
 	}
 	else {
 		hammingDistanceCutoff5 = barcodeMismatch5 * 2;
