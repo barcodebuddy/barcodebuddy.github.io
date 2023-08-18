@@ -36,7 +36,7 @@
 			</div>
 			
 			<div style="width:20%;display:inline-block;vertical-align:top">
-			<div id="spacer" style="height:200px";></div>
+			<div id="spacer" style="height:125px";></div>
 				<fieldset id="instrumentbox" style="width:100%; display:inline-block; margin: 2%;">
 					<legend>Select an instrument:</legend>
 
@@ -71,10 +71,13 @@
 				</fieldset>
 				<button style="display:block; margin:2%" onclick=colorCompare()>Check for color balance</button>
 				<div>
-					<p style="display:inline-block">i7: </p><p id="i7colorcode" style="display:inline-block; margin:1%;background-color: rgba(255,255,255,.2)"></p>
+					<p style="display:inline-block">i7: </p><p id="i7colorcode" style="display:inline-block; margin:1%;background-color: rgba(255,255,255,.2)">&nbsp;</p>
 				</div>
 				<div>
-					<p style="display:inline-block">i5: </p><p id="i5colorcode" style="display:inline-block; margin:1%;background-color: rgba(255,255,255,.2)"></p>
+					<p style="display:inline-block">i5: </p><p id="i5colorcode" style="display:inline-block; margin:1%;background-color: rgba(255,255,255,.2)">&nbsp;</p>
+				</div>
+				<div>
+					<p style="display:inline-block; margin:1%;background-color: rgba(255,255,255,.2); font-size:16px"><span>&nbsp;Good</span>&nbsp;<span style="background-color:#DDCC77">&nbsp;Okay</span>&nbsp;<span style="background-color:#CC6677">&nbsp;Poor</span>&nbsp;<span style="background-color:#882255">&nbsp;Very Poor</span>&nbsp;</p>
 				</div>
 			</div>
 			<button style="display:block; margin:1%" onclick=indexCompare()>Check for collisions</button>
@@ -491,19 +494,19 @@ function colorBalanceChecker(indexList,instType,whichIndex) {
 	for (i = 0; i < idealArray.length; i++) {
 		if (idealArray[i] == true) {
 			finalReturnArray.push(0);
-			colorcodedtext = colorcodedtext + "<span>" + (i+1) + "</span> "
+			colorcodedtext = colorcodedtext + "<span>" + (i+1) + "</span>&nbsp;"
 		}
 		else if (okayArray[i] == true) {
 			finalReturnArray.push(1);
-			colorcodedtext = colorcodedtext + "<span style=background-color:" + yellow + ">" + (i+1) + "</span> "
+			colorcodedtext = colorcodedtext + "<span style=background-color:" + yellow + ">" + (i+1) + "</span>&nbsp;"
 		}
 		else if (badArray[i] == true) {
 			finalReturnArray.push(1);
-			colorcodedtext = colorcodedtext + "<span style=background-color:" + codered + ">" + (i+1) + "</span> "
+			colorcodedtext = colorcodedtext + "<span style=background-color:" + codered + ">" + (i+1) + "</span>&nbsp;"
 		}
 		else {
 			finalReturnArray.push(2);
-			colorcodedtext = colorcodedtext + "<span style=background-color:" + red + ">" + (i+1) + "</span> "
+			colorcodedtext = colorcodedtext + "<span style=background-color:" + red + ">" + (i+1) + "</span>&nbsp;"
 		}
 	}
 	colorcodediv.innerHTML = colorcodedtext;

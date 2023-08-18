@@ -733,8 +733,8 @@ input, select, textarea {
 				position: absolute;
 				top: 0;
 				left: 0;
-				width: 1.6875rem;
-				height: 1.6875rem;
+				width: 1.5rem;
+				height: 1.5rem;
 				line-height: 1.6875rem;
 				background: rgba(255, 255, 255, 0.075);
 				border: solid 1px rgba(255, 255, 255, 0.25);
