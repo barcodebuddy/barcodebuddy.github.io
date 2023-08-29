@@ -115,7 +115,7 @@ function hammingDistanceSingle(parsedList,barcodeMismatch) {
 	hammingDistanceCutoff = barcodeMismatch * 2;
 	returnMessage = "";
 	for (i = 0; i < parsedList.length - 1; i++) {
-		for (j = 1; (i + j) < parsedList.length; i++) {
+		for (j = 1; (i + j) < parsedList.length; j++) {
 			collisionExample = "";
 			str1 = parsedList[i]
 			str2 = parsedList[i+j];
@@ -157,6 +157,7 @@ function hammingDistanceSingle(parsedList,barcodeMismatch) {
 				  	collisionExample = collisionExample += str1[k];
 				  }
 			   };
+			   console.log(str1 + " " + str2 + " " + dist)
 			   if (dist <= hammingDistanceCutoff) {
 					returnMessage = "are invalid; " + "the ambiguous barcode " + collisionExample + " cannot be resolved between " + str1 + " and " + str2 + ". For a mismatch tolerance of " + barcodeMismatch + ", a minimum Hamming distance of " + (hammingDistanceCutoff + 1) + " is needed.";
 					i = parsedList.length;
