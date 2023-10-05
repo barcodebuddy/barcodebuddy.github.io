@@ -46,7 +46,7 @@ Position 1 is 75% A, 25% G. Because there is neither 10% C nor 10% T present, no
 
 Position 2 has 25% of each base, and thus at least 10% of both A and T (as well as C and G). The position is annotated as "best".
 
-Position 3 has 75% T and 25% G. With no A or C present this does not meet any of the requirements of the "better" or "best" pairs. However, it does have enough A + G to meet the requirements of "very poor", so it is annotated as "poor".
+Position 3 has 75% T and 25% G. With no A or C present this does not meet any of the requirements of the "better" or "best" pairs. However, it doesn't have enough A + G to meet the requirements of "very poor", so it is annotated as "poor".
 
 Position 4 has 50% A and 50% C. This is not one of the "best" pairs, but it is one of the "better" pairs, so the position is annotated as "better".
 
