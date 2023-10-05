@@ -60,7 +60,7 @@ Given sequences X and Y of arbitrary but equal length that are identical except 
 
 For example, let mismatch tolerance n = **2**, X = **AAAAAA**, Y = **ATTTTA**. X and Y are 4 apart in Hamming distance, differing at positions 2-6.
 
-Following the above rules, we can construct A (same base) + AA (first n bases of sequence X) + TT (remaining bases from sequence Y) + A = **AAATTA**
+Following the above rules, we can construct A (same base) + AA (first n bases of sequence X) + TT (remaining bases from sequence Y) + A (same base) = **AAATTA**
 
 This sequence is 2 away from both X (positions 4 and 5) and Y (positions 2 and 3), and thus would be an ambiguous barcode at mismatch tolerance 2. Mismatch tolerance must be lowered, or a more distinct pair of barcodes must be used, to avoid this.
 
