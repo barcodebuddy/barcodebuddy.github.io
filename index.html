@@ -418,11 +418,11 @@ function colorBalanceChecker(indexList,instType,whichIndex) {
 	thisCycle = [0,0,0,0]; //A,C,T,G
 	iSeqIdeal = [["A","C"],["T","G"]] 
 	iSeqOkay = [["A","T"],["C","T"]] //G is off for both images, avoid G + a base that is also off for one of the images as well
-	MiniNextNovaIdeal = [["A","G"],["C","T"]] //A is both channels, C/T is blue/green
+	MiniNextNovaIdeal = [["A","G"],["C","T"],["A","A"]] //A is both channels, C/T is blue/green
 	MiniNextNovaOkay = [["A","C"],["A","T"]]
 	MiSeqIdeal = [["A","G"],["A","T"],["C","G"],["C","T"]]
 	NovaXIdeal = [["A","T"],["C","G"]] //C is both channels, A/T is blue/green
-	NovaXOkay = [["A","C"],["C","T"]] 
+	NovaXOkay = [["A","C"],["C","T"],["C","C"]] 
 	NovaXRedFlag = [["A","G"]]//blue channel + neither channel is a particularly poor combination on the X
 	for (i = 0; i < indexList.length; i++) {	
 		if (indexList[i].length != indexList[0].length) {
