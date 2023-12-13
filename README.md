@@ -14,14 +14,14 @@ Calculates proportion of each nucleotide per position. If at least 10% for each 
 Best: AG, AT, CG, CT
 
 ##### MiniSeq, NextSeq500/550, NextSeq1000/2000, NovaSeq6000 (dual-channel base is A, no-channel base is G):
-Best: AG, CT
+Best: AG, CT, AA
 
 Better: AC, AG, AT, CT
 
 ##### iSeq (dual-image base is A, neither-image base is G):
-Best: AC,GT
+Best: AC, GT
 
-Better: AT,CT,GT,AC
+Better: AT, CT, GT, AC
 
 ##### NovaSeqX/X+ (dual-channel base is C, no-channel base is G):
 Best: AT, CG
@@ -46,7 +46,7 @@ Position 1 is 75% A, 25% G. Because there is neither 10% C nor 10% T present, no
 
 Position 2 has 25% of each base, and thus at least 10% of both A and T (as well as C and G). The position is annotated as "best".
 
-Position 3 has 75% T and 25% G. With no A or C present this does not meet any of the requirements of the "better" or "best" pairs. However, it doesn't have enough A + G to meet the requirements of "very poor", so it is annotated as "poor".
+Position 3 has 75% T and 25% G. With no A or C present this does not meet any of the requirements of the "better" or "best" pairs. However, it does have enough A + G to meet the requirements of "very poor", so it is annotated as "poor".
 
 Position 4 has 50% A and 50% C. This is not one of the "best" pairs, but it is one of the "better" pairs, so the position is annotated as "better".
 
@@ -60,7 +60,7 @@ Given sequences X and Y of arbitrary but equal length that are identical except 
 
 For example, let mismatch tolerance n = **2**, X = **AAAAAA**, Y = **ATTTTA**. X and Y are 4 apart in Hamming distance, differing at positions 2-6.
 
-Following the above rules, we can construct A (same base) + AA (first n bases of sequence X) + TT (remaining bases from sequence Y) + A (same base) = **AAATTA**
+Following the above rules, we can construct A (same base) + AA (first n bases of sequence X) + TT (remaining bases from sequence Y) + A = **AAATTA**
 
 This sequence is 2 away from both X (positions 4 and 5) and Y (positions 2 and 3), and thus would be an ambiguous barcode at mismatch tolerance 2. Mismatch tolerance must be lowered, or a more distinct pair of barcodes must be used, to avoid this.
 
