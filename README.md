@@ -26,7 +26,7 @@ Better: AT, CT, GT, AC
 ##### NovaSeqX/X+ (dual-channel base is C, no-channel base is G):
 Best: AT, CG
 
-Better: AC, CT
+Better: AC, CT, CC
 
 Very Poor: AG, mono-A, mono-G
 
