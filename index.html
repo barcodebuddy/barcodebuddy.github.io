@@ -426,7 +426,7 @@ function colorBalanceChecker(indexList,instType,whichIndex) {
 	NovaXRedFlag = [["A","G"]]//blue channel + neither channel is a particularly poor combination on the X
 	for (i = 0; i < indexList.length; i++) {	
 		if (indexList[i].length != indexList[0].length) {
-			returnMessage = whichIndex + " barcodes are different lengths";
+			returnMessage = whichIndex + "s " + indexList[0] + " and " + indexList[0] + " do not match in length";
 			alert(returnMessage);
 			return returnMessage;
 		}
@@ -436,7 +436,7 @@ function colorBalanceChecker(indexList,instType,whichIndex) {
 		for (i = 0; i < indexList.length; i++) {
 			tmpBase = sanitize(indexList[i][j]);
 			if (tmpBase == "Non-ACGTN Character encountered.\n") {
-				alert(tmpBase + indexList[i]);
+				alert(tmpBase + whichIndex + " " + indexList[i]);
 				return null;
 			}
 			else {
@@ -502,22 +502,26 @@ function colorBalanceChecker(indexList,instType,whichIndex) {
 	if (okayArray.length == 0) {
 		okayArray = Array(idealArray.length).fill(false);
 	}
+	
+
 	for (i = 0; i < idealArray.length; i++) {
-		if (idealArray[i] == true) {
+	console.log("A: " + (Math.round(fullReturn[i][0] * 100) / 100))
+		formattedProportions = "A: " + (Math.round(fullReturn[i][0] * 100) / 100) + "\nC: " + (Math.round(fullReturn[i][1] * 100) / 100) + "\nT: " + (Math.round(fullReturn[i][2] * 100) / 100) + "\nG: " + (Math.round(fullReturn[i][3] * 100) / 100)
+		if (badArray[i] == true) {
+			finalReturnArray.push(1);
+			colorcodedtext = colorcodedtext + "<span title=" + "\"" + formattedProportions + "\"" + " style=background-color:" + codered + ">" + (i+1) + "</span>&nbsp;"
+		}
+		else if (idealArray[i] == true) {
 			finalReturnArray.push(0);
-			colorcodedtext = colorcodedtext + "<span>" + (i+1) + "</span>&nbsp;"
+			colorcodedtext = colorcodedtext + "<span title=" + "\"" + formattedProportions + "\"" + ">" + (i+1) + "</span>&nbsp;"
 		}
 		else if (okayArray[i] == true) {
 			finalReturnArray.push(1);
-			colorcodedtext = colorcodedtext + "<span style=background-color:" + yellow + ">" + (i+1) + "</span>&nbsp;"
-		}
-		else if (badArray[i] == true) {
-			finalReturnArray.push(1);
-			colorcodedtext = colorcodedtext + "<span style=background-color:" + codered + ">" + (i+1) + "</span>&nbsp;"
+			colorcodedtext = colorcodedtext + "<span title=" + "\"" + formattedProportions + "\"" + " style=background-color:" + yellow + ">" + (i+1) + "</span>&nbsp;"
 		}
 		else {
 			finalReturnArray.push(2);
-			colorcodedtext = colorcodedtext + "<span style=background-color:" + red + ">" + (i+1) + "</span>&nbsp;"
+			colorcodedtext = colorcodedtext + "<span title=" + "\"" + formattedProportions + "\"" + " style=background-color:" + red + ">" + (i+1) + "</span>&nbsp;"
 		}
 	}
 	colorcodediv.innerHTML = colorcodedtext;
@@ -531,7 +535,7 @@ function assessBalance(cycleBaseArrayList,instList,minmax) {
 		for (i = 0; i < cycleBaseArrayList.length; i++) {
 			balanced = false;
 			for (j = 0; j < baseComboList.length; j++) {
-				if (cycleBaseArrayList[i][baseChart.indexOf(baseComboList[j][0])] >= 0.1 && cycleBaseArrayList[i][baseChart.indexOf(baseComboList[j][1])] >= 0.1) {
+				if (cycleBaseArrayList[i][baseChart.indexOf(baseComboList[j][0])] >= 0.17 && cycleBaseArrayList[i][baseChart.indexOf(baseComboList[j][1])] >= 0.17) {
 					balanced = true;
 				}
 			}
