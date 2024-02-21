@@ -363,7 +363,7 @@ function reverseComplement(sequence) {
 
 function sanitize(index) {
 	validBases = ['A','C','T','G','N']
-	index = index.toUpperCase().trim();
+	index = index.trim().toUpperCase();
 	for (indexPos = 0; indexPos < index.length; indexPos++) {
 		if (!validBases.includes(index[indexPos])) {
 			return "Non-ACGTN Character encountered.\n"
@@ -431,10 +431,13 @@ function colorBalanceChecker(indexList,instType,whichIndex) {
 			return returnMessage;
 		}
 	}
+	for (i = 0; i < indexList.length; i++) {	
+		indexList[i] = sanitize(indexList[i])
+	}
 	for (j = 0; j < indexList[0].length; j++) {
 		thisCycle = [0,0,0,0]; 
 		for (i = 0; i < indexList.length; i++) {
-			tmpBase = sanitize(indexList[i][j]);
+			tmpBase = indexList[i][j];
 			if (tmpBase == "Non-ACGTN Character encountered.\n") {
 				alert(tmpBase + whichIndex + " " + indexList[i]);
 				return null;
