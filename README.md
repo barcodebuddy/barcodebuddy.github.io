@@ -8,7 +8,9 @@ Enter indices in the text boxes, each index on a new row. Leaving one of the box
 &nbsp;
 
 ### Color Balance
-Calculates proportion of each nucleotide per position. If at least 10% for each base in a "best" pair listed below is present, it will be unannotated for "best". Otherwise if at least 10% for each base in a "better" pair is present, it will be annotated in yellow for "okay". If at least 66% of the total bases at that position are a combination considered particularly poor, it will be annotated dark red for "very poor". Otherwise, if no "best" or "better" pair for that instrument is present with at least 10% per base, it will be annotated light red for "poor".
+Calculates proportion of each nucleotide per position. If at least 66% of the total bases at that position are a combination considered particularly poor, it will be annotated dark red for "very poor". Otherwise, if at least 17% for each base in a "best" pair listed below is present, it will be left unannotated for "best". If neither "very poor" nor "best", then if at least 17% for each base in a "better" pair is present, it will be annotated in yellow for "okay". Lastly, if none of the above apply, it will be annotated light red for "poor".
+
+The bases can be hovered over to display the per-nucleotide proportions, rounded to two decimal points.
 
 ##### MiSeq:
 Best: AG, AT, CG, CT
@@ -42,7 +44,7 @@ Very Poor: AG, mono-A, mono-G
 
 * ATTA
 
-Position 1 is 75% A, 25% G. Because there is neither 10% C nor 10% T present, none of the "better" or "best" pairs are present. 100% of the bases are A or G, so the position is annotated as "very poor".
+Position 1 is 75% A, 25% G. Because there is greater than 66% A and G combined, the position is annotated as "very poor".
 
 Position 2 has 25% of each base, and thus at least 10% of both A and T (as well as C and G). The position is annotated as "best".
 
