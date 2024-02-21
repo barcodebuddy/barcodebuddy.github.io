@@ -363,7 +363,7 @@ function reverseComplement(sequence) {
 
 function sanitize(index) {
 	validBases = ['A','C','T','G','N']
-	index = index.toUpperCase();
+	index = index.toUpperCase().trim();
 	for (indexPos = 0; indexPos < index.length; indexPos++) {
 		if (!validBases.includes(index[indexPos])) {
 			return "Non-ACGTN Character encountered.\n"
@@ -425,8 +425,8 @@ function colorBalanceChecker(indexList,instType,whichIndex) {
 	NovaXOkay = [["A","C"],["C","T"],["C","C"]] 
 	NovaXRedFlag = [["A","G"]]//blue channel + neither channel is a particularly poor combination on the X
 	for (i = 0; i < indexList.length; i++) {	
-		if (indexList[i].length != indexList[0].length) {
-			returnMessage = whichIndex + "s " + indexList[0] + " and " + indexList[0] + " do not match in length";
+		if (sanitize(indexList[i]).length != sanitize(indexList[0]).length) {
+			returnMessage = whichIndex + "s " + indexList[0] + " and " + indexList[i] + " do not match in length";
 			alert(returnMessage);
 			return returnMessage;
 		}
