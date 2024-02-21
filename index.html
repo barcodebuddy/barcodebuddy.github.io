@@ -506,7 +506,7 @@ function colorBalanceChecker(indexList,instType,whichIndex) {
 
 	for (i = 0; i < idealArray.length; i++) {
 	console.log("A: " + (Math.round(fullReturn[i][0] * 100) / 100))
-		formattedProportions = "A: " + (Math.round(fullReturn[i][0] * 100) / 100) + "\nC: " + (Math.round(fullReturn[i][1] * 100) / 100) + "\nT: " + (Math.round(fullReturn[i][2] * 100) / 100) + "\nG: " + (Math.round(fullReturn[i][3] * 100) / 100)
+		formattedProportions = "A: " + (Math.round(fullReturn[i][0] * 100)) + "%\nC: " + (Math.round(fullReturn[i][1] * 100)) + "%\nT: " + (Math.round(fullReturn[i][2] * 100)) + "%\nG: " + (Math.round(fullReturn[i][3] * 100)) + "%"
 		if (badArray[i] == true) {
 			finalReturnArray.push(1);
 			colorcodedtext = colorcodedtext + "<span title=" + "\"" + formattedProportions + "\"" + " style=background-color:" + codered + ">" + (i+1) + "</span>&nbsp;"
