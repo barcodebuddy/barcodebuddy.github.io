@@ -2,7 +2,7 @@
 
 [barcodebuddy.github.io](https://barcodebuddy.github.io)
 
-## This tool is not an official Illumina product.
+### This tool is not an official Illumina product.
 
 ### How to Use
 Enter indices in the text boxes, each index on a new row. Leaving one of the boxes empty will run single-indexed checking. All indices in a list must be of the same length, and use only ACTGN characters. If both boxes have text in them, dual-indexed checking will be run. The number of indices in the i7 and i5 must match in this case.
